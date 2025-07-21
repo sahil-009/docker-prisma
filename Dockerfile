@@ -17,4 +17,4 @@ ENV DATABASE_URL=postgresql://postgres:mysecreatepassword@localhost:5432/postgre
 RUN npx prisma generate
 
 # Start the application
-CMD ["npm", "start"]
+CMD ["npm", "start",]
