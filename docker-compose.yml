@@ -1,20 +1,27 @@
 version: '3.8'
 services:
   postgres:
-    image: postgres
+    image: postgres:15-alpine
     ports:
       - "5432:5432"
     environment:
       POSTGRES_PASSWORD: mysecreatepsssword
+      POSTGRES_DB: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   user_app:
     build:
-      network: host
-      context: ./
+      context: .
       dockerfile: Dockerfile
     environment:
-      DATABASE_URL: postgres://postgres:mysecreatepsssword@postgres:5432/postgres
+      DATABASE_URL: "postgresql://postgres:mysecreatepsssword@postgres:5432/postgres?schema=public"
     ports:
       - "3000:3000"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
