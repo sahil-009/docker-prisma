@@ -1,0 +1,1 @@
+DATABASE_URL="postgresql://postgres:mysecreatepassword@localhost:5432/postgres"
